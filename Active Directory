@@ -30,3 +30,13 @@ foreach($User in $Users)
     }
 }
 ####### AD-Kerberos-AES.ps1 #######
+
+
+####### ktpass examples for keytab creation #######
+# remember, the user in AD should have AES enabled (programmatically or manually doesn't matter)
+
+ktpass -princ http/keycloak.tai.intra@TAI.INTRA -pass !Tai2019! -mapuser tai\keycloak -crypto all -ptype KRB5_NT_PRINCIPAL -out keycloak.keytab -kvno 0
+
+ktpass -princ cifs/alfresco6.tst.lcl@TST.LCL -pass !Alfresco!6 -mapuser tst\cifsalfresco6 -crypto all -ptype KRB5_NT_PRINCIPAL -out cifsalfresco6.keytab -kvno 0
+
+####### ktpass examples for keytab creation #######
