@@ -13,6 +13,8 @@ What we want to do is to enable AES for Kerberos that, by default, is not.
 
 Look at AD-Kerberos-AES.ps1 below to have an idea on how to do that.
 
+
+
 ####### AD-Kerberos-AES.ps1 #######
 # The numerical values for Kerberos AES encryption types to support
 $AES128 = 0x8
@@ -30,6 +32,7 @@ foreach($User in $Users)
     }
 }
 ####### AD-Kerberos-AES.ps1 #######
+
 
 
 ####### ktpass examples for keytab creation #######
