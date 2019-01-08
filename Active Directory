@@ -38,8 +38,43 @@ foreach($User in $Users)
 ####### ktpass examples for keytab creation #######
 # remember, the user in AD should have AES enabled (programmatically or manually doesn't matter)
 
-ktpass -princ http/keycloak.tai.intra@TAI.INTRA -pass !Tai2019! -mapuser tai\keycloak -crypto all -ptype KRB5_NT_PRINCIPAL -out keycloak.keytab -kvno 0
+ktpass -princ http/keycloak.tai.intra@TAI.INTRA -SetUPN -pass !Tai2019! -mapuser tai\keycloak -crypto all -ptype KRB5_NT_PRINCIPAL -out keycloak.keytab -kvno 0
 
 ktpass -princ cifs/alfresco6.tst.lcl@TST.LCL -pass !Alfresco!6 -mapuser tst\cifsalfresco6 -crypto all -ptype KRB5_NT_PRINCIPAL -out cifsalfresco6.keytab -kvno 0
 
 ####### ktpass examples for keytab creation #######
+
+
+
+# Now, a CRITICAL step that is often forgot is to check that the Service Principal Name (SPN) for the user in AD and the SPN
+# in the keytab file are IDENTICAL (case sensitivity matters here).
+
+setspn -L keycloak
+Registered ServicePrincipalNames for CN=Keycloak,OU=test_Keycloak,OU=lab,DC=tai,DC=intra:
+        http/keycloak.tai.intra
+
+
+
+ktpass /in keycloak.keytab
+
+[...]
+keysize 84 http/keycloak.tai.intra@TAI.INTRA ptype 1 (KRB5_NT_PRINCIPAL) vno 0 etype 0x12 (AES256-SHA1) keylength 32 (0x6e41abbb4f819d3d106c001b2c3af2730f0e8d86d4b075c3f289311f374ebe80)
+[...]
+
+# So, from the output we see that we have a difference; we should add http/keycloak.tai.intra@TAI.INTRA to the user's SPN in AD.
+
+setspn -S http/keycloak.tai.intra@TAI.INTRA keycloak
+Checking domain DC=tai,DC=intra
+
+Registering ServicePrincipalNames for CN=Keycloak,OU=test_Keycloak,OU=lab,DC=tai,DC=intra
+        http/keycloak.tai.intra@TAI.INTRA
+Updated object
+
+
+# let's see if it ok now (YES, it is)
+setspn -L keycloak
+Registered ServicePrincipalNames for CN=Keycloak,OU=test_Keycloak,OU=lab,DC=tai,DC=intra:
+        http/keycloak.tai.intra@TAI.INTRA
+        http/keycloak.tai.intra
+
+
