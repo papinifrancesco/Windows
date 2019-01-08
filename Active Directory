@@ -77,4 +77,17 @@ Registered ServicePrincipalNames for CN=Keycloak,OU=test_Keycloak,OU=lab,DC=tai,
         http/keycloak.tai.intra@TAI.INTRA
         http/keycloak.tai.intra
 
+# now, copy the keytab file (keycloak.keytab for in the example) to the Unix machine
+# still from the Unix machine, test you can actually get a Kerberos ticket
 
+kinit http/keycloak.tai.intra@TAI.INTRA -k -t /etc/keycloak.keytab
+
+klist
+Ticket cache: KEYRING:persistent:0:0
+Default principal: http/keycloak.tai.intra@TAI.INTRA
+
+Valid starting       Expires              Service principal
+08/01/2019 10:32:14  08/01/2019 20:32:14  krbtgt/TAI.INTRA@TAI.INTRA
+	renew until 15/01/2019 10:32:14
+
+# OK, it worked.
