@@ -1,0 +1,4 @@
+# somehow, the people picker doesn't find a person so you cannot give him permissions on a website
+# use stsadmin.exe , for example:
+
+stsadm.exe -o adduser -url http://SharepointWebSiteURL -userlogin DOMAIN\donaldduck -useremail donald.duck@email.org -role reader -username "Donald Duck"
