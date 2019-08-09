@@ -2,3 +2,9 @@
 # use stsadmin.exe , for example:
 
 stsadm.exe -o adduser -url http://SharepointWebSiteURL -userlogin DOMAIN\donaldduck -useremail donald.duck@email.org -role reader -username "Donald Duck"
+
+
+
+# PS - remove a subsite
+Remove-SPWeb http://mainSite/subSite
+
