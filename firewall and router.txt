@@ -1,0 +1,24 @@
+Scenario:
+the VPN client to access a customer works only on Windows, so we set it up and we want to share that connection with other colleagues.
+
+1) First, we connect with the VPN client
+
+2) We define the port proxying we want to make:
+# requests made to our socket 172.16.33.13:80 will be transparently forwarded to the remote socket 10.151.51.205:80
+# dafsharesrv.gruppo.autostrade.it
+netsh interface portproxy add v4tov4 listenaddress=172.16.33.13 listenport=55555 connectaddress=10.151.51.205 connectport=80
+
+# requests made to our socket 172.16.33.13:55555 will be transparently forwarded to the remote socket 10.151.51.203:80
+# dafsrv.gruppo.autostrade.it
+netsh interface portproxy add v4tov4 listenaddress=172.16.33.13 listenport=55555 connectaddress=10.151.51.203 connectport=80
+
+3) Let's define an inbound firewall rule:
+netsh advfirewall firewall add rule name="Test rule" protocol=TCP dir=in localport=80,55555 action=allow
+
+4) Tell your collegues to modify their hosts file:
+172.16.33.13 dafsrv.gruppo.autostrade.it
+172.16.33.13 dafsharesrv.gruppo.autostrade.it
+
+5) They'll connect to:
+http://dafsrv.gruppo.autostrade.it:55555
+http://dafsharesrv.gruppo.autostrade.it:80
