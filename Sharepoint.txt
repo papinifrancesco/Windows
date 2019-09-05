@@ -8,3 +8,27 @@ stsadm.exe -o adduser -url http://SharepointWebSiteURL -userlogin DOMAIN\donaldd
 # PS - remove a subsite
 Remove-SPWeb http://mainSite/subSite
 
+
+
+-----------------------------------------------------------------------------------------------------------------------------
+http://buyevich.blogspot.com/2011/03/no-paging-on-groups-page.html
+No paging on SharePoint groups page
+I don't know exact reason but this was a fact: I have more than 30 SharePoint groups in particular site collection and no paging at all. For other site collections paging is there.
+
+I was very annoying: I had to filter by group name to have access to members list for groups with name started with 'k' and below.
+
+I googled and found this is actually a hidden view of User Information List. Looked like it had 'Limit the total number of items returned to the specified amount' set under 'Items limit' instead of 'Display items in batches of the specified size'. So, the question was How to get access to its View Edit page?
+
+Actual View Edit page is an application page in layouts folder (_layouts/viewedit.aspx) and it accepts two parameters in query string: List and View ids.
+
+What I did:
+
+- went to the groups page (http://spSite/_layouts/groups.aspx)
+
+- opened page source and found list and view guids there. The answer was searching by WebQuerySourceHref= phrase. I found url with this values there.
+
+- went to http://spSite/_layouts/viewedit.aspx?List={630F7EE7-1EA5-45F5-A162-4523647E1564}&View={132D30FA-EAD7-4134-B328-DB873CE82BD0}
+(ids are mine :)
+
+- changed the settings under 'Items limit'
+-----------------------------------------------------------------------------------------------------------------------------
