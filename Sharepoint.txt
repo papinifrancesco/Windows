@@ -38,3 +38,13 @@ What I did:
 Recycle Bin is your friend.
 http://site/_layouts/15/AdminRecycleBin.aspx
 -----------------------------------------------------------------------------------------------------------------------------
+
+
+-----------------------------------------------------------------------------------------------------------------------------
+# CHANGE group owner
+$web = Get-SPWeb http://webUrl
+$groupOwner = $web.SiteGroups["GroupA"] #this group will own "GroupB"
+$groupTarget = $web.SiteGroups["GroupB"]
+$groupTarget.Owner = $groupOwner
+$groupTarget.Update()
+-----------------------------------------------------------------------------------------------------------------------------
